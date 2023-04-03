@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Randomizing People</title>
+        <link rel="stylesheet" href="libraries/bootstrap-5.2.3-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+
+        <div class="container">
+            <h1>Randomizing People</h1>
+
+            <div class="my-4 row justify-content-evenly">
+                <div class="col-10">
+                    <div class="row">
+                        <div class="col-2 my-auto d-flex">
+                            <label for="formFile" class="form-label">Choose a csv file</label>
+                        </div>
+                        <div class="col-6">
+                            <input class="form-control" type="file" id="formFile" accept="csv">
+                        </div>
+                        <div class="col-2">
+                            <button type="button" class="btn btn-primary" id="btn-load-file">Load</button>
+                        </div>
+                        <div class="col-2">
+                            <button type="button" class="btn btn-secondary" id="btn-enter-names">Enter names</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="">
+                        <button type="button" class="btn btn-primary" id="btn-download-results">Download list</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal enter names -->
+            <div class="modal modal-lg fade" id="modal-enter-names" tabindex="-1" aria-labelledby="modal-enter-names-label" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="modal-enter-names-label">Enter names manually</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="form-enter-names">
+                                <div class="mb-3" data-input-number="0">
+                                    <label for="name-input-0" class="col-form-label">Name:</label>
+                                    <input type="text" class="form-control name-inputs" id="name-input-0">
+                                </div>
+                                
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="modal-enter-names-save">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal upload csv -->
+            <div class="modal modal-lg fade" id="modal-setup-csv" tabindex="-1" aria-labelledby="modal-setup-csv-label" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="modal-setup-csv-label">Setup CSV file</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Chose which columns to use:</p>
+                            <table class="table">
+                                <thead>
+                                    <tr id="setup-csv-thead-tr">
+                                    </tr>
+                                </thead>
+                                <tbody id="setup-csv-tbody">
+                                    <!-- gets filled in programmatically -->
+                                </tbody>
+                            </table>
+                            <div id="setup-csv-table-shadow"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="modal-setup-csv-save">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="my-2 d-flex justify-content-center text-secondary">
+                Data is not being uploaded but processed locally on your machine!
+            </div>
+
+            <div class="my-4 row">
+                <div class="col-3">
+                    <div class="row" id="input-count-wrapper">
+                        <div class="col-8 my-auto">
+                            <label for="input-groupsize" class="form-label">Members per group:</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control" id="input-groupsize" value="2" size="2">
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-primary" id="btn-randomize">Randomize!</button>
+                    <button type="button" class="btn btn-secondary d-none" id="btn-reset">Reset</button>
+                </div>
+            </div>
+
+            <div class="col-3" id="container-names">
+            </div>
+        </div>
+
+        <script src="libraries/bootstrap-5.2.3-dist/js/bootstrap.min.js"></script>
+        <script src="libraries/anime-master/anime.min.js"></script>
+        <script src="libraries/papaparse-5.0.2/papaparse.min.js"></script>
+        <script src="script.js"></script>
+    </body>
+</html>
