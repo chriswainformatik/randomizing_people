@@ -20,6 +20,7 @@ function regenerateCards() {
         var div = document.createElement('div');
         div.classList.add('card');
         div.classList.add('p-2');
+        div.classList.add('card-name');
         div.id = 'card-' + n.id;
         div.dataset.id = n.id;
         div.dataset.name = n.value;
@@ -73,17 +74,26 @@ document.getElementById('modal-setup-csv-save').addEventListener('click', () => 
         });
         return result;
     }());
+    var modalWarningText = document.getElementById('modal-setup-csv-warning-text');
+    modalWarningText.classList.add('d-none');
+    if (colsToUse.length == 0) {
+        modalWarningText.classList.remove('d-none');
+        return;
+    }
     for (var i = 0; i < fileContents.data.length; i++) {
         var nameToUse = '';
         colsToUse.forEach(element => {
-            nameToUse += ' ' + fileContents.data[i][element];
+            if (fileContents.data[i][element] != undefined)
+                nameToUse += ' ' + fileContents.data[i][element];
         });
-        names.push({
-            id: i,
-            value: nameToUse,
-            shufflePos: i,
-            groupNumber: 0,
-        })
+        if (nameToUse.length > 0 && nameToUse.replaceAll(' ', '').length > 0) {
+            names.push({
+                id: i,
+                value: nameToUse,
+                shufflePos: i,
+                groupNumber: 0,
+            })
+        }
     }
     setupCSVModal.hide();
     regenerateCards();
@@ -93,6 +103,8 @@ function showCSVContents(results) {
     var lines = [];
     var  numCols = results.data[0].length;
     var theadTr = document.getElementById('setup-csv-thead-tr');
+    theadTr.replaceChildren();
+    document.getElementById('setup-csv-tbody').replaceChildren();
     for (var i = 0; i < numCols; i++) {
         var th = document.createElement('th');
         th.scop = 'col';
@@ -174,20 +186,27 @@ function showAnimation() {
     var groupSizeTmp = 0;
     var elementId = 0;
     var groupNumber = 0;
+    var theAnimation = anime({
+        targets: '.card-name',
+        duration: 100,
+        delay: anime.stagger(100),
+        easing: 'easeInOutSine',
+        autoplay: false,
+    });
     names.forEach(el => {
         var domElement = document.getElementById('card-'+el.id);
         domElement.dataset.groupNumber = groupNumber;
         el.groupNumber = groupNumber;
         animations[elementId++] = anime({
             targets: '#card-'+el.id,
-            duration: 100,
+            duration: 200,
             delay: myDelay,
             translateX: 250,
             translateY: (domElement.dataset.shufflePos - domElement.dataset.id) * domElement.offsetHeight + groupNumber*25,
             easing: 'easeInOutSine',
             autoplay: false
         });
-        myDelay += 100;
+        myDelay += 25;
         groupSizeTmp++;
         if (groupSizeTmp == groupSize) {
             groupNumber++;
@@ -205,6 +224,12 @@ function showAnimation() {
         });
         */
     }
+    if (document.getElementById('checkbox-colorize-groups').checked) {
+        Array.from(document.getElementsByClassName('card-name')).forEach(element => {
+            if (element.dataset.groupNumber % 2 == 0)
+                element.classList.add('text-bg-secondary');
+        });
+    }
 }
 
 /**
@@ -217,6 +242,9 @@ function reset() {
     document.getElementById('btn-reset').classList.add('d-none');
     document.getElementById('btn-randomize').classList.remove('d-none');
     groupYPos = 0
+    Array.from(document.getElementsByClassName('card-name')).forEach(element => {
+        element.classList.remove('text-bg-secondary');
+    });
     for (var i = 0; i < animations.length; i++) {
         animations[i].reverse();
         animations[i].play();

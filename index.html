@@ -68,7 +68,8 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p>Chose which columns to use:</p>
+                            <p id="modal-setup-csv-text">Chose which columns to use:</p>
+                            <p id="modal-setup-csv-warning-text" class="text-danger d-none">Select at least one column!</p>
                             <table class="table">
                                 <thead>
                                     <tr id="setup-csv-thead-tr">
@@ -103,9 +104,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-3">
                     <button type="button" class="btn btn-primary" id="btn-randomize">Randomize!</button>
                     <button type="button" class="btn btn-secondary d-none" id="btn-reset">Reset</button>
+                </div>
+                <div class="col-4 form-check">
+                    <input type="checkbox" class="form-check-input" value="" id="checkbox-colorize-groups" checked>
+                    <label for="checkbox-colorize-groups" class="form-check-label">Colorize groups</label>
                 </div>
             </div>
 
